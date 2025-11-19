@@ -1,0 +1,709 @@
+
+/* ===============================
+   RENAISSANCE EARTHY COLOR PALETTE
+   =============================== */
+:root {
+  /* Deep Renaissance Browns */
+  --renaissance-dark: #2C1810;    /* Rich dark brown like aged wood */
+  --renaissance-primary: #5D4037;  /* Warm chestnut brown */
+  --renaissance-medium: #8B6B61;   /* Muted terracotta */
+  --renaissance-light: #BCAAA4;    /* Soft clay beige */
+  
+  /* Earthy Accents */
+  --earth-red: #A1887F;           /* Burnt sienna */
+  --earth-ochre: #D7CCC8;         /* Warm sand */
+  --earth-umber: #6D4C41;         /* Raw umber */
+  --earth-sienna: #8D6E63;        /* Burnt umber */
+  
+  /* Gold & Parchment Tones */
+  --gold-light: #F9F5F0;          /* Parchment */
+  --gold-accent: #D4B896;         /* Aged gold */
+  --gold-warm: #E8D5C4;           /* Warm ivory */
+  
+  /* Background & Text */
+  --parchment-bg: #FDF6E3;        /* Aged parchment background */
+  --text-dark: #3E2723;           /* Dark chocolate */
+  --text-medium: #5D4037;         /* Warm brown */
+  --text-light: #8D6E63;          /* Muted brown */
+  
+  /* Functional Colors */
+  --success: #4E342E;             /* Dark olive green */
+  --error: #BF360C;               /* Burnt red */
+  --warning: #FF8F00;             /* Amber gold */
+  
+  /* Shadows & Effects */
+  --shadow-soft: 0 4px 12px rgba(44, 24, 16, 0.1);
+  --shadow-medium: 0 8px 25px rgba(44, 24, 16, 0.15);
+  --shadow-strong: 0 12px 35px rgba(44, 24, 16, 0.2);
+  
+  --transition: all 0.4s ease;
+  --border-radius: 8px;
+  --border-radius-lg: 12px;
+}
+
+/* ===============================
+   BASE STYLES WITH RENAISSANCE VIBES
+   =============================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: linear-gradient(135deg, var(--parchment-bg) 0%, var(--gold-warm) 100%);
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-attachment: fixed;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ===============================
+   TYPOGRAPHY - CLASSICAL STYLING
+   =============================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 3rem;
+  color: var(--renaissance-dark);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+}
+
+h2 {
+  font-size: 2.25rem;
+  color: var(--renaissance-primary);
+  margin: 2.5rem 0 1.5rem;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.75rem;
+  color: var(--renaissance-medium);
+  margin: 2rem 0 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* ===============================
+   HEADER - DARK RENAISSANCE WOOD
+   =============================== */
+.header {
+  background: linear-gradient(135deg, var(--renaissance-dark) 0%, var(--renaissance-primary) 100%);
+  color: var(--gold-light);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: var(--shadow-strong);
+  border-bottom: 3px solid var(--gold-accent);
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-logo {
+  max-height: 60px;
+  transition: var(--transition);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.site-logo:hover {
+  transform: scale(1.05) rotate(-2deg);
+  filter: drop-shadow(0 4px 8px rgba(212, 184, 150, 0.4));
+}
+
+/* Navigation - Gold Accents */
+.main-nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.main-nav a {
+  color: var(--gold-light);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  position: relative;
+  transition: var(--transition);
+  border-radius: var(--border-radius);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  border: 1px solid transparent;
+}
+
+.main-nav a:hover {
+  color: var(--gold-accent);
+  background: rgba(212, 184, 150, 0.1);
+  border: 1px solid var(--gold-accent);
+  transform: translateY(-2px);
+}
+
+.main-nav a:focus {
+  outline: 2px solid var(--gold-accent);
+  outline-offset: 2px;
+}
+
+.main-nav a[aria-current="page"] {
+  color: var(--gold-accent);
+  background: rgba(212, 184, 150, 0.15);
+  border: 1px solid var(--gold-accent);
+  box-shadow: 0 4px 12px rgba(212, 184, 150, 0.3);
+}
+
+/* ===============================
+   HERO SECTION - AGED PARCHMENT
+   =============================== */
+.hero {
+  background: 
+    linear-gradient(rgba(44, 24, 16, 0.7), rgba(44, 24, 16, 0.8)),
+    url('../images/cafe-hero.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 70vh;
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--gold-light);
+  margin: 2rem 0 3rem;
+  position: relative;
+  overflow: hidden;
+  border: 8px solid var(--renaissance-dark);
+  box-shadow: var(--shadow-strong);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d4b896' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.3;
+}
+
+.hero-content {
+  background: rgba(44, 24, 16, 0.85);
+  padding: 3rem;
+  border-radius: var(--border-radius-lg);
+  backdrop-filter: blur(10px);
+  max-width: 800px;
+  border: 2px solid var(--gold-accent);
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  color: var(--gold-light);
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.hero h1::after {
+  background: linear-gradient(90deg, transparent, var(--gold-accent), var(--gold-light), var(--gold-accent), transparent);
+}
+
+.hero p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  color: var(--gold-warm);
+}
+
+/* ===============================
+   BUTTONS - GOLD & EARTH TONES
+   =============================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--renaissance-primary) 0%, var(--earth-umber) 100%);
+  color: var(--gold-light);
+  border: none;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  font-family: 'Playfair Display', serif;
+  border: 2px solid var(--gold-accent);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212, 184, 150, 0.4), transparent);
+  transition: left 0.6s;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, var(--earth-umber) 0%, var(--renaissance-dark) 100%);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-medium);
+  border-color: var(--gold-light);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+}
+
+.btn:focus {
+  outline: 2px solid var(--gold-light);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--gold-accent);
+  color: var(--gold-accent);
+}
+
+.btn-secondary:hover {
+  background: var(--gold-accent);
+  color: var(--renaissance-dark);
+}
+
+/* ===============================
+   CARDS - AGED PAPER EFFECT
+   =============================== */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  margin: 3rem 0;
+}
+
+.service-card {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-warm) 100%);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  text-align: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--earth-ochre);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%235d4037' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+
+.service-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-strong);
+  border-color: var(--gold-accent);
+}
+
+.service-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
+  transition: var(--transition);
+  border: 3px solid var(--earth-ochre);
+  box-shadow: var(--shadow-soft);
+}
+
+.service-card:hover img {
+  transform: scale(1.05);
+  border-color: var(--gold-accent);
+}
+
+.price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--renaissance-primary);
+  margin: 1rem 0;
+  font-family: 'Playfair Display', serif;
+}
+
+/* ===============================
+   ACCORDION - VINTAGE STYLING
+   =============================== */
+.accordion {
+  margin: 3rem 0;
+}
+
+.accordion-item {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-warm) 100%);
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  transition: var(--transition);
+  border: 1px solid var(--earth-ochre);
+}
+
+.accordion-item:hover {
+  box-shadow: var(--shadow-medium);
+  border-color: var(--gold-accent);
+}
+
+.accordion-header {
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, var(--renaissance-primary) 0%, var(--earth-umber) 100%);
+  color: var(--gold-light);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: 'Playfair Display', serif;
+}
+
+.accordion-header:hover {
+  background: linear-gradient(135deg, var(--earth-umber) 0%, var(--renaissance-dark) 100%);
+}
+
+.accordion-content {
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+  background: var(--gold-light);
+}
+
+.accordion-content.active {
+  padding: 2rem;
+  max-height: 500px;
+}
+
+/* ===============================
+   FORMS - PARCHMENT STYLING
+   =============================== */
+.form-card {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-warm) 100%);
+  border-radius: var(--border-radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-medium);
+  max-width: 600px;
+  margin: 3rem auto;
+  transition: var(--transition);
+  border: 1px solid var(--earth-ochre);
+  position: relative;
+  overflow: hidden;
+}
+
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--renaissance-primary), var(--gold-accent), var(--renaissance-primary));
+}
+
+.form-card:hover {
+  box-shadow: var(--shadow-strong);
+  border-color: var(--gold-accent);
+}
+
+.form-group {
+  margin-bottom: 2rem;
+}
+
+.form-card label {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--renaissance-primary);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+}
+
+.form-card input,
+.form-card textarea,
+.form-card select {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--earth-ochre);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
+  background: var(--parchment-bg);
+  font-family: 'Georgia', serif;
+  color: var(--text-dark);
+}
+
+.form-card input:focus,
+.form-card textarea:focus,
+.form-card select:focus {
+  outline: none;
+  border-color: var(--gold-accent);
+  box-shadow: 0 0 0 3px rgba(212, 184, 150, 0.2);
+  background: var(--gold-light);
+}
+
+/* ===============================
+   FOOTER - DARK WOOD FINISH
+   =============================== */
+.footer {
+  background: linear-gradient(135deg, var(--renaissance-dark) 0%, var(--renaissance-primary) 100%);
+  color: var(--gold-light);
+  text-align: center;
+  padding: 3rem 0;
+  margin-top: 4rem;
+  border-top: 3px solid var(--gold-accent);
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-accent), transparent);
+}
+
+.footer-logo {
+  width: 140px;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+  filter: brightness(0) invert(1);
+}
+
+/* ===============================
+   SPECIAL RENAISSANCE ELEMENTS
+   =============================== */
+
+/* Ornamental Divider */
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--earth-ochre), 
+    var(--gold-accent), 
+    var(--earth-ochre), 
+    transparent
+  );
+  margin: 3rem 0;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: '❧';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold-accent);
+  font-size: 1.5rem;
+}
+
+.divider::before {
+  left: 20%;
+}
+
+.divider::after {
+  right: 20%;
+}
+
+/* Blockquote Styling */
+blockquote {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-warm) 100%);
+  border-left: 4px solid var(--gold-accent);
+  padding: 2rem;
+  margin: 2rem 0;
+  border-radius: var(--border-radius);
+  font-style: italic;
+  position: relative;
+  box-shadow: var(--shadow-soft);
+}
+
+blockquote::before {
+  content: '"';
+  font-size: 4rem;
+  color: var(--gold-accent);
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-family: 'Times New Roman', serif;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: var(--renaissance-primary);
+  font-style: normal;
+}
+
+/* Price Tags */
+.price {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--renaissance-primary) 0%, var(--earth-umber) 100%);
+  color: var(--gold-light);
+  border-radius: 20px;
+  font-weight: 700;
+  border: 2px solid var(--gold-accent);
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+   =============================== */
+
+/* Tablet Styles */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .main-nav {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .main-nav a {
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-content {
+    padding: 2rem 1rem;
+  }
+  
+  .btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .service-card {
+    padding: 1.5rem;
+  }
+}
+
+/* ===============================
+   ANIMATIONS & EFFECTS
+   =============================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.fade-in {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.scale-up {
+  animation: scaleIn 0.6s ease-out;
+}
+
+/* Loading Spinner with Gold Accent */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(212, 184, 150, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--gold-accent);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

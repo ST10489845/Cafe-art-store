@@ -1,0 +1,180 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Enquiry Form — Contact BREW & SCULPT for Products & Collaborations</title>
+  <meta name="description" content="Get in touch with BREW & SCULPT for product enquiries, artist collaborations, wholesale coffee, or sculpture purchases. We respond within 24 hours.">
+  <meta name="keywords" content="coffee enquiry, art purchase, collaboration, wholesale, sculpture commission, contact brew and sculpt">
+  <meta name="author" content="BREW & SCULPT">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Georgia&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- SKIP LINK FOR ACCESSIBILITY -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-inner fade-in">
+      <!-- Logo -->
+      <a href="index.html">
+        <img src="images/logo.png" alt="BREW & SCULPT Café logo" class="site-logo">
+      </a>
+      
+      <!-- Mobile Navigation Toggle -->
+      <button class="nav-toggle" aria-label="Toggle navigation menu">☰</button>
+      
+      <!-- Navigation -->
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Products</a>
+        <a href="enquiry.html" aria-current="page">Enquiry</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main id="main" class="container fade-in">
+    <h1>Begin Your Renaissance Journey</h1>
+    <p class="text-center" style="max-width: 800px; margin: 0 auto 2rem; font-size: 1.2rem;">Interested in our products, collaborations, or have a special request? We'd love to hear from you and discuss how we can bring artistic excellence to your experience.</p>
+
+    <!-- Enquiry Hero Image -->
+    <img src="images/enquiry-hero.jpeg" alt="Welcoming café space at BREW & SCULPT prepared for guest enquiries and consultations" class="scale-up" loading="lazy" style="width: 100%; max-height: 400px; object-fit: cover; border-radius: var(--border-radius-lg); margin: 2rem 0; border: 3px solid var(--gold-accent);">
+
+    <!-- Quick Links -->
+    <section class="quick-links" aria-labelledby="quick-links">
+      <h2 id="quick-links" class="hidden">Quick Enquiry Options</h2>
+      <div class="location-cards">
+        <div class="location-card">
+          <h3>☕ Product Orders</h3>
+          <p>Purchase coffee, sculptures, or merchandise for personal or business use</p>
+          <a href="#enquiry-form" class="btn">Order Products</a>
+        </div>
+        <div class="location-card">
+          <h3>🎨 Artist Collaboration</h3>
+          <p>Submit artwork or discuss exhibition opportunities in our gallery space</p>
+          <a href="#enquiry-form" class="btn">Discuss Collaboration</a>
+        </div>
+        <div class="location-card">
+          <h3>🏢 Wholesale & Corporate</h3>
+          <p>Explore bulk orders, corporate gifts, or office coffee solutions</p>
+          <a href="#enquiry-form" class="btn">Business Enquiry</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ornamental Divider -->
+    <div class="divider"></div>
+
+    <!-- Enquiry Form -->
+    <section class="enquiry-form-section" aria-labelledby="enquiry-form">
+      <h2 id="enquiry-form">Send Us Your Enquiry</h2>
+      <p class="text-center" style="max-width: 800px; margin: 0 auto 2rem; font-size: 1.1rem; color: var(--text-medium);">Complete the form below and we'll respond within 24 hours</p>
+      
+      <div class="form-card scale-up">
+        <form id="enquiryForm" method="post">
+          <div class="form-group">
+            <label for="enquiry-type">Enquiry Type *</label>
+            <select id="enquiry-type" name="enquiry-type" required>
+              <option value="">Please select your enquiry type...</option>
+              <option value="coffee">Coffee Products & Wholesale</option>
+              <option value="artwork">Artwork Purchase & Commission</option>
+              <option value="collaboration">Artist Collaboration & Exhibition</option>
+              <option value="event">Event Space Booking & Catering</option>
+              <option value="wholesale">Business & Wholesale Orders</option>
+              <option value="other">Other Enquiry</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" name="name" required placeholder="Enter your full name">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+27 12 345 6789">
+          </div>
+
+          <div class="form-group">
+            <label for="budget">Budget Range</label>
+            <select id="budget" name="budget">
+              <option value="">Not specified</option>
+              <option value="0-500">R0 - R500</option>
+              <option value="500-2000">R500 - R2,000</option>
+              <option value="2000-5000">R2,000 - R5,000</option>
+              <option value="5000+">R5,000+</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="urgency">Urgency of Response</label>
+            <select id="urgency" name="urgency">
+              <option value="casual">Casual enquiry - no rush</option>
+              <option value="soon">Within 2 weeks</option>
+              <option value="urgent">Within 1 week</option>
+              <option value="asap">As soon as possible</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Project Details *</label>
+            <textarea id="message" name="message" rows="6" required placeholder="Tell us about your project, specific requirements, artistic preferences, or any questions you have. The more details you provide, the better we can assist you..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
+              <input type="checkbox" name="newsletter" checked style="margin-top: 0.25rem;">
+              <span>Subscribe to our Renaissance newsletter for updates, new artwork arrivals, exclusive events, and special promotions</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn" style="width: 100%;">
+            Send Enquiry
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Response Time Information -->
+    <section class="response-info" aria-labelledby="response-info">
+      <h2 id="response-info" class="hidden">Response Information</h2>
+      <div class="location-cards">
+        <div class="location-card">
+          <h3>⏰ Response Time</h3>
+          <p>We respond to all enquiries within 24 hours during business days. Urgent enquiries are prioritized.</p>
+        </div>
+        <div class="location-card">
+          <h3>🎨 Consultation</h3>
+          <p>Complex projects may require a complimentary consultation call to discuss your vision in detail.</p>
+        </div>
+        <div class="location-card">
+          <h3>📞 Follow-up</h3>
+          <p>We'll follow up to ensure your needs are met and gather feedback on your experience.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner fade-in">
+      <img src="images/logo.png" alt="BREW & SCULPT Café logo in footer" class="footer-logo">
+      <p>&copy; 2025 BREW & SCULPT — CAFÉ & ART GALLERY —</p>
+      <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--gold-warm);">123 Artisan Street, Cape Town, 8001</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js" defer></script>
+</body>
+</html>
