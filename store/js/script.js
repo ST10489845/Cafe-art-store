@@ -1,4 +1,5 @@
 
+
 // ===============================
 // CONFIGURATION & CONSTANTS
 // ===============================
@@ -34,6 +35,7 @@ const CONFIG = {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 BREW & SCULPT Website Initializing...');
     initializeWebsite();
+    initEnhancedFeatures();
 });
 
 // ===============================
@@ -65,8 +67,281 @@ function initializeWebsite() {
 }
 
 // ===============================
-// RESPONSIVE NAVIGATION
+// ENHANCED FEATURES FOR PART 3
 // ===============================
+function initEnhancedFeatures() {
+    console.log('🚀 Initializing Enhanced BREW & SCULPT Features...');
+    
+    setCanonicalURLs();
+    initPerformanceMonitoring();
+    initFormAnalytics();
+    lazyLoadSecondaryContent();
+    initEnhancedSearch();
+    
+    console.log('✅ Enhanced features initialized successfully');
+}
+
+// Canonical URL setup for SEO
+function setCanonicalURLs() {
+    const canonicalLink = document.createElement('link');
+    canonicalLink.rel = 'canonical';
+    canonicalLink.href = window.location.href.split('?')[0];
+    document.head.appendChild(canonicalLink);
+}
+
+// Performance monitoring
+function initPerformanceMonitoring() {
+    if ('PerformanceObserver' in window) {
+        const observer = new PerformanceObserver((list) => {
+            list.getEntries().forEach((entry) => {
+                console.log(`📊 ${entry.name}: ${entry.value}`);
+            });
+        });
+        
+        observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
+    }
+}
+
+// Form analytics for user behavior tracking
+function initFormAnalytics() {
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const formData = new FormData(this);
+            const formType = this.id === 'enquiryForm' ? 'enquiry' : 'contact';
+            
+            console.log(`📝 Form submitted: ${formType}`, {
+                timestamp: new Date().toISOString(),
+                fields: Object.fromEntries(formData),
+                url: window.location.href
+            });
+        });
+        
+        // Track form abandonment
+        let formStarted = false;
+        const inputs = form.querySelectorAll('input, textarea, select');
+        
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (!formStarted) {
+                    formStarted = true;
+                    console.log(`📝 Form started: ${form.id}`);
+                }
+            });
+        });
+    });
+}
+
+// Enhanced lazy loading
+function lazyLoadSecondaryContent() {
+    const lazyImages = [].slice.call(document.querySelectorAll('img[data-src]'));
+    
+    if ('IntersectionObserver' in window) {
+        const lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    const lazyImage = entry.target;
+                    lazyImage.src = lazyImage.dataset.src;
+                    lazyImage.classList.remove('lazy');
+                    lazyImageObserver.unobserve(lazyImage);
+                }
+            });
+        });
+
+        lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+        });
+    }
+}
+
+// Enhanced search functionality
+function initEnhancedSearch() {
+    const searchInput = document.querySelector('.search-box input');
+    if (searchInput) {
+        const searchHandler = debounce(function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            performSearch(searchTerm);
+        }, 300);
+
+        searchInput.addEventListener('input', searchHandler);
+        
+        // Add clear search functionality
+        const clearButton = document.createElement('button');
+        clearButton.type = 'button';
+        clearButton.className = 'search-clear';
+        clearButton.innerHTML = '&times;';
+        clearButton.setAttribute('aria-label', 'Clear search');
+        clearButton.style.display = 'none';
+        
+        searchInput.parentNode.appendChild(clearButton);
+        
+        clearButton.addEventListener('click', function() {
+            searchInput.value = '';
+            performSearch('');
+            this.style.display = 'none';
+            searchInput.focus();
+        });
+        
+        searchInput.addEventListener('input', function() {
+            clearButton.style.display = this.value ? 'block' : 'none';
+        });
+    }
+}
+
+function performSearch(searchTerm) {
+    const serviceCards = document.querySelectorAll('.service-card');
+    let visibleCount = 0;
+
+    serviceCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const description = card.querySelector('p').textContent.toLowerCase();
+        const price = card.querySelector('.price')?.textContent.toLowerCase() || '';
+        const tags = card.dataset.tags?.toLowerCase() || '';
+
+        const matches = title.includes(searchTerm) || 
+                      description.includes(searchTerm) || 
+                      price.includes(searchTerm) ||
+                      tags.includes(searchTerm);
+
+        if (matches || !searchTerm) {
+            card.style.display = 'block';
+            visibleCount++;
+            card.classList.add('fade-in');
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    const resultsContainer = document.querySelector('.services-grid');
+    let noResultsMsg = resultsContainer.querySelector('.no-results');
+    
+    if (visibleCount === 0 && searchTerm) {
+        if (!noResultsMsg) {
+            noResultsMsg = document.createElement('div');
+            noResultsMsg.className = 'no-results text-center';
+            noResultsMsg.innerHTML = `
+                <h4>No products found</h4>
+                <p>No products matching "<strong>${searchTerm}</strong>" were found.</p>
+                <p class="text-muted">Try different keywords or browse all categories</p>
+                <button class="btn btn-secondary" onclick="clearSearch()">Clear Search</button>
+            `;
+            resultsContainer.appendChild(noResultsMsg);
+        }
+    } else if (noResultsMsg) {
+        noResultsMsg.remove();
+    }
+}
+
+function clearSearch() {
+    const searchInput = document.querySelector('.search-box input');
+    const clearButton = document.querySelector('.search-clear');
+    
+    if (searchInput) {
+        searchInput.value = '';
+        performSearch('');
+    }
+    if (clearButton) {
+        clearButton.style.display = 'none';
+    }
+}
+
+// Enhanced form validation
+function validateFieldEnhanced(field) {
+    const value = field.value.trim();
+    let isValid = true;
+    let errorMessage = '';
+
+    if (field.hasAttribute('required') && !value) {
+        isValid = false;
+        errorMessage = `${field.labels[0]?.textContent || 'This field'} is required`;
+    }
+
+    if (field.type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+            isValid = false;
+            errorMessage = 'Please enter a valid email address (e.g., name@example.com)';
+        }
+    }
+
+    if ((field.type === 'tel' || field.name === 'phone') && value) {
+        const cleanPhone = value.replace(/[\s\-\(\)]/g, '');
+        const phoneRegex = /^[\+]?27[\s]?[0-9]{2}[\s]?[0-9]{3}[\s]?[0-9]{4}$|^0[0-9]{9}$/;
+        
+        if (!phoneRegex.test(cleanPhone)) {
+            isValid = false;
+            errorMessage = 'Please enter a valid South African phone number (e.g., +27 12 345 6789 or 012 345 6789)';
+        }
+    }
+
+    if (field.type === 'textarea' && value.length < 10) {
+        isValid = false;
+        errorMessage = 'Please provide more details (minimum 10 characters required)';
+    }
+
+    if (!isValid && errorMessage) {
+        showFieldError(field, errorMessage);
+    } else if (isValid) {
+        clearFieldError(field);
+    }
+
+    return isValid;
+}
+
+// Enhanced success modal
+function showEnhancedSuccessModal(title, message, options = {}) {
+    const modal = document.createElement('div');
+    modal.className = 'response-modal enhanced';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-labelledby', 'modal-title');
+    modal.setAttribute('aria-modal', 'true');
+
+    const { autoClose = 5000, showCloseButton = true, actions = [] } = options;
+
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3 id="modal-title">${title}</h3>
+            <p>${message}</p>
+            <div class="modal-actions">
+                ${actions.map(action => 
+                    `<button class="btn ${action.primary ? 'btn-primary' : 'btn-secondary'}" 
+                            onclick="${action.onclick}">${action.text}</button>`
+                ).join('')}
+                ${showCloseButton ? '<button class="btn modal-close">Got it!</button>' : ''}
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    const closeButton = modal.querySelector('.modal-close');
+    if (closeButton) {
+        closeButton.focus();
+        closeButton.addEventListener('click', () => closeModal(modal));
+    }
+
+    if (autoClose) {
+        setTimeout(() => {
+            if (modal.parentNode) {
+                closeModal(modal);
+            }
+        }, autoClose);
+    }
+
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeModal(modal);
+        }
+    });
+
+    trapFocus(modal);
+}
+
+// ===============================
+// EXISTING FUNCTIONALITY (KEEP ALL YOUR ORIGINAL CODE)
+// ===============================
+
+// RESPONSIVE NAVIGATION
 function initNavigation() {
     const navToggle = document.querySelector('.nav-toggle');
     const mainNav = document.querySelector('.main-nav');
@@ -80,27 +355,23 @@ function initNavigation() {
             navToggle.setAttribute('aria-expanded', !isExpanded);
             navToggle.innerHTML = isExpanded ? '☰' : '✕';
             
-            // Add animation class
             if (!isExpanded) {
                 mainNav.classList.add('slide-in-left');
             }
         });
         
-        // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             if (!event.target.closest('.header') && mainNav.classList.contains('active')) {
                 closeMobileMenu();
             }
         });
         
-        // Close on escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && mainNav.classList.contains('active')) {
                 closeMobileMenu();
             }
         });
         
-        // Handle navigation link clicks
         mainNav.addEventListener('click', function(e) {
             if (e.target.tagName === 'A') {
                 closeMobileMenu();
@@ -120,9 +391,7 @@ function closeMobileMenu() {
     }
 }
 
-// ===============================
 // SMOOTH SCROLLING
-// ===============================
 function initSmoothScrolling() {
     const links = document.querySelectorAll('a[href^="#"]');
     
@@ -130,7 +399,6 @@ function initSmoothScrolling() {
         link.addEventListener('click', function(e) {
             const targetId = this.getAttribute('href');
             
-            // Skip if it's just "#"
             if (targetId === '#') return;
             
             const targetElement = document.querySelector(targetId);
@@ -145,16 +413,13 @@ function initSmoothScrolling() {
                     behavior: 'smooth'
                 });
                 
-                // Update URL without page jump
                 history.pushState(null, null, targetId);
             }
         });
     });
 }
 
-// ===============================
 // ANIMATIONS ON SCROLL
-// ===============================
 function initScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -170,7 +435,6 @@ function initScrollAnimations() {
         });
     }, observerOptions);
     
-    // Observe elements for scroll animations
     const animatedElements = document.querySelectorAll(
         '.service-card, .form-card, .location-card, .accordion-item'
     );
@@ -182,11 +446,8 @@ function initScrollAnimations() {
     });
 }
 
-// ===============================
 // FORM HANDLING & VALIDATION
-// ===============================
 function initForms() {
-    // Enquiry Form
     const enquiryForm = document.getElementById('enquiryForm');
     if (enquiryForm) {
         enquiryForm.addEventListener('submit', handleEnquirySubmit);
@@ -194,7 +455,6 @@ function initForms() {
         prefillFormFromURL(enquiryForm);
     }
     
-    // Contact Form
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', handleContactSubmit);
@@ -206,17 +466,14 @@ function setupRealTimeValidation(form) {
     const inputs = form.querySelectorAll('input, textarea, select');
     
     inputs.forEach(input => {
-        // Real-time validation on blur
         input.addEventListener('blur', function() {
-            validateField(this);
+            validateFieldEnhanced(this);
         });
         
-        // Clear error on focus
         input.addEventListener('focus', function() {
             clearFieldError(this);
         });
         
-        // Real-time email validation
         if (input.type === 'email') {
             input.addEventListener('input', debounce(function() {
                 if (this.value.length > 3) {
@@ -225,7 +482,6 @@ function setupRealTimeValidation(form) {
             }, 300));
         }
         
-        // Real-time phone validation
         if (input.type === 'tel' || input.name === 'phone') {
             input.addEventListener('input', debounce(function() {
                 if (this.value.length > 5) {
@@ -234,47 +490,6 @@ function setupRealTimeValidation(form) {
             }, 300));
         }
     });
-}
-
-function validateField(field) {
-    const value = field.value.trim();
-    let isValid = true;
-    let errorMessage = '';
-    
-    // Required field validation
-    if (field.hasAttribute('required') && !value) {
-        isValid = false;
-        errorMessage = 'This field is required';
-    }
-    
-    // Email validation
-    if (field.type === 'email' && value) {
-        if (!validateEmail(field)) {
-            isValid = false;
-        }
-    }
-    
-    // Phone validation
-    if ((field.type === 'tel' || field.name === 'phone') && value) {
-        if (!validatePhone(field)) {
-            isValid = false;
-        }
-    }
-    
-    // Text area minimum length
-    if (field.type === 'textarea' && value.length < 10) {
-        isValid = false;
-        errorMessage = 'Please provide more details (minimum 10 characters)';
-    }
-    
-    // Update field state
-    if (!isValid && errorMessage) {
-        showFieldError(field, errorMessage);
-    } else if (isValid) {
-        clearFieldError(field);
-    }
-    
-    return isValid;
 }
 
 function validateEmail(field) {
@@ -292,7 +507,6 @@ function validateEmail(field) {
 
 function validatePhone(field) {
     const value = field.value.trim();
-    // South African phone number regex (simplified)
     const phoneRegex = /^[\+]?27[\s]?[0-9]{2}[\s]?[0-9]{3}[\s]?[0-9]{4}$|^0[0-9]{9}$/;
     const cleanPhone = value.replace(/[\s\-\(\)]/g, '');
     
@@ -318,7 +532,6 @@ function showFieldError(field, message) {
     errorElement.textContent = message;
     errorElement.classList.add('show');
     
-    // Add ARIA attributes for accessibility
     field.setAttribute('aria-invalid', 'true');
     field.setAttribute('aria-describedby', errorElement.id || generateId());
 }
@@ -338,9 +551,7 @@ function generateId() {
     return 'error-' + Math.random().toString(36).substr(2, 9);
 }
 
-// ===============================
 // ENQUIRY FORM SUBMISSION
-// ===============================
 async function handleEnquirySubmit(e) {
     e.preventDefault();
     
@@ -348,12 +559,11 @@ async function handleEnquirySubmit(e) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     
-    // Validate all fields
     const inputs = form.querySelectorAll('input, textarea, select');
     let isValid = true;
     
     inputs.forEach(input => {
-        if (!validateField(input)) {
+        if (!validateFieldEnhanced(input)) {
             isValid = false;
         }
     });
@@ -364,15 +574,12 @@ async function handleEnquirySubmit(e) {
         return;
     }
     
-    // Show loading state
     submitBtn.innerHTML = '<span class="loading"></span> Processing...';
     submitBtn.disabled = true;
     
     try {
-        // Simulate API call delay
         await new Promise(resolve => setTimeout(resolve, 2000));
         
-        // Get form data
         const formData = new FormData(form);
         const enquiryData = {
             type: formData.get('enquiry-type'),
@@ -387,23 +594,15 @@ async function handleEnquirySubmit(e) {
             source: 'website-form'
         };
         
-        // Log for demonstration (in real app, send to server)
         console.log('Enquiry Submission:', enquiryData);
-        
-        // Show success response based on enquiry type
         showEnquiryResponse(enquiryData);
-        
-        // Reset form
         form.reset();
-        
-        // Track conversion
         trackConversion('enquiry_submission');
         
     } catch (error) {
         console.error('Enquiry submission error:', error);
         showNotification('Sorry, there was an error submitting your enquiry. Please try again.', 'error');
     } finally {
-        // Restore button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
     }
@@ -442,12 +641,25 @@ function showEnquiryResponse(data) {
             responseDetails = `Thank you ${data.name}! We'll get back to you at ${data.email} within 24 hours.`;
     }
     
-    // Add newsletter confirmation if subscribed
     if (data.newsletter) {
         responseDetails += ' You have been subscribed to our newsletter.';
     }
     
-    showResponseModal(responseMessage, responseDetails);
+    showEnhancedSuccessModal(responseMessage, responseDetails, {
+        autoClose: 8000,
+        actions: [
+            {
+                text: 'Browse More Products',
+                onclick: 'window.location.href="services.html"',
+                primary: false
+            },
+            {
+                text: 'Contact Us',
+                onclick: 'window.location.href="contact.html"',
+                primary: true
+            }
+        ]
+    });
 }
 
 function prefillFormFromURL(form) {
@@ -479,9 +691,7 @@ function prefillFormFromURL(form) {
     }
 }
 
-// ===============================
 // CONTACT FORM SUBMISSION
-// ===============================
 async function handleContactSubmit(e) {
     e.preventDefault();
     
@@ -489,12 +699,11 @@ async function handleContactSubmit(e) {
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     
-    // Validate all fields
     const inputs = form.querySelectorAll('input, textarea');
     let isValid = true;
     
     inputs.forEach(input => {
-        if (!validateField(input)) {
+        if (!validateFieldEnhanced(input)) {
             isValid = false;
         }
     });
@@ -505,15 +714,12 @@ async function handleContactSubmit(e) {
         return;
     }
     
-    // Show loading state
     submitBtn.innerHTML = '<span class="loading"></span> Sending...';
     submitBtn.disabled = true;
     
     try {
-        // Simulate email sending delay
         await new Promise(resolve => setTimeout(resolve, 1500));
         
-        // Get form data
         const formData = new FormData(form);
         const contactData = {
             name: formData.get('name'),
@@ -524,11 +730,28 @@ async function handleContactSubmit(e) {
             page: window.location.pathname
         };
         
-        // Simulate email sending
         const emailSent = await simulateEmailSending(contactData);
         
         if (emailSent) {
-            showNotification('✅ Message sent successfully! We\'ll get back to you within 24 hours.', 'success');
+            showEnhancedSuccessModal(
+                '✅ Message Sent Successfully!', 
+                'Thank you for your message! We\'ll get back to you within 24 hours. Our team is looking forward to assisting you.',
+                {
+                    autoClose: 6000,
+                    actions: [
+                        {
+                            text: 'View Our Products',
+                            onclick: 'window.location.href="services.html"',
+                            primary: false
+                        },
+                        {
+                            text: 'Learn About Us',
+                            onclick: 'window.location.href="about.html"',
+                            primary: true
+                        }
+                    ]
+                }
+            );
             form.reset();
             trackConversion('contact_submission');
         } else {
@@ -539,7 +762,6 @@ async function handleContactSubmit(e) {
         console.error('Contact form error:', error);
         showNotification('❌ Sorry, there was an error sending your message. Please try again.', 'error');
     } finally {
-        // Restore button
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
     }
@@ -548,7 +770,6 @@ async function handleContactSubmit(e) {
 async function simulateEmailSending(data) {
     return new Promise((resolve) => {
         setTimeout(() => {
-            // In a real implementation, this would be an API call to your backend
             console.log('📧 Email would be sent:', {
                 to: CONFIG.contactEmail,
                 from: data.email,
@@ -560,9 +781,7 @@ async function simulateEmailSending(data) {
     });
 }
 
-// ===============================
 // GALLERY & LIGHTBOX
-// ===============================
 function initGallery() {
     const galleryItems = document.querySelectorAll('.gallery-item');
     const lightbox = createLightbox();
@@ -578,7 +797,6 @@ function initGallery() {
             openLightbox(lightbox, images[index].src, images[index].alt, index);
         });
         
-        // Keyboard accessibility
         item.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -588,7 +806,6 @@ function initGallery() {
         });
     });
     
-    // Keyboard navigation for lightbox
     document.addEventListener('keydown', function(e) {
         if (lightbox.classList.contains('active')) {
             switch(e.key) {
@@ -632,19 +849,28 @@ function createLightbox() {
     lightbox.innerHTML = `
         <div class="lightbox-content">
             <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+            <button class="lightbox-nav lightbox-prev" aria-label="Previous image">‹</button>
+            <button class="lightbox-nav lightbox-next" aria-label="Next image">›</button>
             <img class="lightbox-img" src="" alt="" id="lightbox-image">
             <div class="lightbox-caption" id="lightbox-title"></div>
+            <div class="lightbox-counter"></div>
         </div>
     `;
     
     document.body.appendChild(lightbox);
     
-    // Close lightbox on button click
     lightbox.querySelector('.lightbox-close').addEventListener('click', function() {
         closeLightbox(lightbox);
     });
     
-    // Close lightbox on background click
+    lightbox.querySelector('.lightbox-prev').addEventListener('click', function() {
+        navigateLightbox(-1);
+    });
+    
+    lightbox.querySelector('.lightbox-next').addEventListener('click', function() {
+        navigateLightbox(1);
+    });
+    
     lightbox.addEventListener('click', function(e) {
         if (e.target === lightbox) {
             closeLightbox(lightbox);
@@ -657,16 +883,18 @@ function createLightbox() {
 function openLightbox(lightbox, imgSrc, imgAlt, index) {
     const img = lightbox.querySelector('.lightbox-img');
     const caption = lightbox.querySelector('.lightbox-caption');
+    const counter = lightbox.querySelector('.lightbox-counter');
+    const galleryItems = document.querySelectorAll('.gallery-item');
     
     img.src = imgSrc;
     img.alt = imgAlt;
     caption.textContent = imgAlt;
+    counter.textContent = `${index + 1} / ${galleryItems.length}`;
     
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     
-    // Focus management for accessibility
     lightbox.querySelector('.lightbox-close').focus();
 }
 
@@ -675,16 +903,13 @@ function closeLightbox(lightbox) {
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     
-    // Return focus to the element that opened the lightbox
     const galleryItems = document.querySelectorAll('.gallery-item');
     if (galleryItems.length > 0) {
         galleryItems[0].focus();
     }
 }
 
-// ===============================
 // ACCORDION FUNCTIONALITY
-// ===============================
 function initAccordions() {
     const accordionHeaders = document.querySelectorAll('.accordion-header');
     
@@ -695,7 +920,6 @@ function initAccordions() {
             const content = this.nextElementSibling;
             const isActive = content.classList.contains('active');
             
-            // Close all accordions in the same container
             const parentAccordion = this.closest('.accordion');
             if (parentAccordion) {
                 parentAccordion.querySelectorAll('.accordion-content').forEach(item => {
@@ -704,14 +928,12 @@ function initAccordions() {
                 });
             }
             
-            // Open current one if it wasn't active
             if (!isActive) {
                 content.classList.add('active');
                 this.setAttribute('aria-expanded', 'true');
             }
         });
         
-        // Keyboard accessibility
         header.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -721,9 +943,7 @@ function initAccordions() {
     });
 }
 
-// ===============================
 // SEARCH & FILTER FUNCTIONALITY
-// ===============================
 function initSearchFilter() {
     const searchInput = document.querySelector('.search-box input');
     const serviceCards = document.querySelectorAll('.service-card');
@@ -751,7 +971,6 @@ function initSearchFilter() {
                 }
             });
             
-            // Show message if no results
             const resultsContainer = document.querySelector('.services-grid');
             let noResultsMsg = resultsContainer.querySelector('.no-results');
             
@@ -775,14 +994,9 @@ function initSearchFilter() {
     }
 }
 
-// ===============================
 // INTERACTIVE MAPS
-// ===============================
 function initMaps() {
-    // Enhanced existing iframe maps with interactivity
     enhanceExistingMaps();
-    
-    // Initialize location cards
     initLocationCards();
 }
 
@@ -790,7 +1004,6 @@ function enhanceExistingMaps() {
     const mapContainers = document.querySelectorAll('.map-container');
     
     mapContainers.forEach((container, index) => {
-        // Add loading state
         const iframe = container.querySelector('iframe');
         if (iframe) {
             iframe.addEventListener('load', function() {
@@ -798,7 +1011,6 @@ function enhanceExistingMaps() {
             });
         }
         
-        // Add interactive features
         container.style.cursor = 'grab';
         container.setAttribute('tabindex', '0');
         container.setAttribute('role', 'application');
@@ -837,7 +1049,6 @@ function enhanceExistingMaps() {
             container.scrollTop = scrollTop - walkY;
         });
         
-        // Keyboard navigation
         container.addEventListener('keydown', (e) => {
             switch(e.key) {
                 case 'ArrowUp':
@@ -867,7 +1078,6 @@ function initLocationCards() {
     locationCards.forEach((card, index) => {
         const location = CONFIG.locations[index];
         if (location) {
-            // Add click handler to focus map
             card.addEventListener('click', function() {
                 const mapContainer = document.querySelector(`.map-container:nth-of-type(${index + 1})`);
                 if (mapContainer) {
@@ -876,7 +1086,6 @@ function initLocationCards() {
                 }
             });
             
-            // Add keyboard support
             card.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -887,18 +1096,14 @@ function initLocationCards() {
     });
 }
 
-// ===============================
 // NOTIFICATION SYSTEM
-// ===============================
 function showNotification(message, type = 'info') {
-    // Remove existing notifications
     const existingNotifications = document.querySelectorAll('.notification');
     existingNotifications.forEach(notification => {
         notification.style.animation = 'slideInRight 0.3s ease reverse';
         setTimeout(() => notification.remove(), 300);
     });
     
-    // Create new notification
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.setAttribute('role', 'alert');
@@ -911,17 +1116,14 @@ function showNotification(message, type = 'info') {
     
     document.body.appendChild(notification);
     
-    // Close button functionality
     notification.querySelector('.notification-close').addEventListener('click', () => {
         closeNotification(notification);
     });
     
-    // Auto-remove after 5 seconds
     const autoRemove = setTimeout(() => {
         closeNotification(notification);
     }, 5000);
     
-    // Keep notification on hover
     notification.addEventListener('mouseenter', () => {
         clearTimeout(autoRemove);
     });
@@ -940,15 +1142,11 @@ function closeNotification(notification) {
     }
 }
 
-// ===============================
 // RESPONSE MODAL
-// ===============================
 function showResponseModal(title, message) {
-    // Remove existing modal
     const existingModal = document.querySelector('.response-modal');
     if (existingModal) existingModal.remove();
     
-    // Create modal
     const modal = document.createElement('div');
     modal.className = 'response-modal';
     modal.setAttribute('role', 'dialog');
@@ -965,30 +1163,25 @@ function showResponseModal(title, message) {
     
     document.body.appendChild(modal);
     
-    // Focus management
     const closeButton = modal.querySelector('.modal-close');
     closeButton.focus();
     
-    // Close modal
     closeButton.addEventListener('click', () => {
         closeModal(modal);
     });
     
-    // Close on background click
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             closeModal(modal);
         }
     });
     
-    // Close on escape key
     modal.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeModal(modal);
         }
     });
     
-    // Trap focus inside modal
     trapFocus(modal);
 }
 
@@ -1025,11 +1218,8 @@ function trapFocus(modal) {
     });
 }
 
-// ===============================
 // ANIMATION UTILITIES
-// ===============================
 function initAnimations() {
-    // Add intersection observer for scroll animations
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1042,11 +1232,8 @@ function initAnimations() {
     animatedElements.forEach(el => observer.observe(el));
 }
 
-// ===============================
 // PERFORMANCE OPTIMIZATIONS
-// ===============================
 function initPerformanceOptimizations() {
-    // Lazy load images
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1064,7 +1251,6 @@ function initPerformanceOptimizations() {
         });
     }
     
-    // Preload critical resources
     const criticalResources = [
         '/css/style.css',
         '/js/script.js'
@@ -1079,9 +1265,7 @@ function initPerformanceOptimizations() {
     });
 }
 
-// ===============================
 // UTILITY FUNCTIONS
-// ===============================
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -1108,10 +1292,8 @@ function throttle(func, limit) {
 }
 
 function trackConversion(event) {
-    // In a real implementation, this would send to Google Analytics
     console.log(`📊 Conversion tracked: ${event}`);
     
-    // Example GA4 implementation
     if (typeof gtag !== 'undefined') {
         gtag('event', event, {
             'event_category': 'engagement',
@@ -1120,16 +1302,9 @@ function trackConversion(event) {
     }
 }
 
-// ===============================
 // ERROR HANDLING
-// ===============================
 window.addEventListener('error', function(e) {
     console.error('JavaScript Error:', e.error);
-    
-    // Report to error tracking service
-    if (typeof Sentry !== 'undefined') {
-        Sentry.captureException(e.error);
-    }
 });
 
 window.addEventListener('unhandledrejection', function(e) {
@@ -1137,9 +1312,7 @@ window.addEventListener('unhandledrejection', function(e) {
     e.preventDefault();
 });
 
-// ===============================
 // OFFLINE DETECTION
-// ===============================
 window.addEventListener('online', function() {
     showNotification('Connection restored', 'success');
 });
@@ -1148,9 +1321,7 @@ window.addEventListener('offline', function() {
     showNotification('You are currently offline. Some features may be unavailable.', 'warning');
 });
 
-// ===============================
 // SERVICE WORKER (PWA FEATURES)
-// ===============================
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js')
@@ -1163,15 +1334,10 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// ===============================
 // PROGRESSIVE ENHANCEMENT
-// ===============================
-// Check if JavaScript is enabled
 document.documentElement.classList.add('js-enabled');
 
-// ===============================
 // EXPORT FOR TESTING
-// ===============================
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         validateEmail,
